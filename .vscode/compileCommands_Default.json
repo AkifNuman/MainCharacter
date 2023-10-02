@@ -1,0 +1,42 @@
+[
+	{
+		"file": "D:\\Unreal Projects\\CharSystem\\Source\\CharSystem\\CharSystem.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Unreal Projects\\CharSystem\\.vscode\\compileCommands_Default\\CharSystem.255.rsp"
+		],
+		"directory": "E:\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Unreal Projects\\CharSystem\\Source\\CharSystem\\CharSystem.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Unreal Projects\\CharSystem\\.vscode\\compileCommands_Default\\CharSystem.255.rsp"
+		],
+		"directory": "E:\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Unreal Projects\\CharSystem\\Source\\CharSystem\\CharSystem.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Unreal Projects\\CharSystem\\.vscode\\compileCommands_Default\\CharSystem.255.rsp"
+		],
+		"directory": "E:\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Unreal Projects\\CharSystem\\Source\\CharSystem\\CharSystemGameModeBase.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Unreal Projects\\CharSystem\\.vscode\\compileCommands_Default\\CharSystem.255.rsp"
+		],
+		"directory": "E:\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "D:\\Unreal Projects\\CharSystem\\Source\\CharSystem\\CharSystemGameModeBase.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\bin\\HostX64\\x64\\cl.exe",
+			"@D:\\Unreal Projects\\CharSystem\\.vscode\\compileCommands_Default\\CharSystem.255.rsp"
+		],
+		"directory": "E:\\Epic Games\\UE_5.1\\Engine\\Source"
+	}
+]
