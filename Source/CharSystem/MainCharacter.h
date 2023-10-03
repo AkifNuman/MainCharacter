@@ -39,15 +39,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		USkeletalMeshComponent* MyMesh;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animations")
-		float Direction;
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animations")
-		float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		bool IsWalking;
 
 	UFUNCTION()
 	void MoveForward(float Value);
 
 	UFUNCTION()
 	void MoveRight(float Value);
+
+	void Run(float Value);
 };

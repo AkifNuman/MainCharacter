@@ -1,5 +1,6 @@
 
 #include "MainCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -7,8 +8,8 @@ AMainCharacter::AMainCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Mannequin(TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin"));
-	static ConstructorHelpers::FObjectFinder<UAnimBlueprint> AnimBP(TEXT("/Game/AnimStarterPack/UE4ASP_HeroTPP_AnimBlueprint"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Mannequin(TEXT("/Game/MainCharacter/MannequinMesh/Mesh/SK_Mannequin"));
+	static ConstructorHelpers::FObjectFinder<UAnimBlueprint> AnimBP(TEXT("/Game/MainCharacter/Animations/MainCharacterAnimBP"));
 	GetMesh()->SetSkeletalMesh(Mannequin.Object);
 	GetMesh()->SetAnimInstanceClass(AnimBP.Object->GeneratedClass);
 
@@ -19,9 +20,12 @@ AMainCharacter::AMainCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 21.12540f));
 	SpringArm->SetRelativeRotation(FRotator(-8.385537f, 0.0f, 0.0f));
+	SpringArm->bUsePawnControlRotation = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+	GetCharacterMovement()->MaxWalkSpeed = 225.f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 	
@@ -53,16 +57,22 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAxis("Run", this, &AMainCharacter::Run);
 }
 
 void AMainCharacter::MoveForward(float Value)
 {
 		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
-		
-		//Speed += 1;
-		//if (GEngine)
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, FString::Printf(TEXT("%f"), Speed));
+		if ((Value != NULL) && (Value > 0))
+		{
+			IsWalking = true;
+		}
+		else
+		{
+			IsWalking = false;
+		}
 }
 
 void AMainCharacter::MoveRight(float Value)
@@ -71,3 +81,15 @@ void AMainCharacter::MoveRight(float Value)
 	AddMovementInput(Direction, Value);
 }
 
+void AMainCharacter::Run(float Value)
+{
+	if ((Value != NULL) && (Value > 0))
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 550.f;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 225.f;
+	}
+
+}
