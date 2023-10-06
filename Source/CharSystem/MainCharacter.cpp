@@ -1,6 +1,7 @@
 
 #include "MainCharacter.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/Engine.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -12,9 +13,11 @@ AMainCharacter::AMainCharacter()
 	static ConstructorHelpers::FObjectFinder<UAnimBlueprint> AnimBP(TEXT("/Game/MainCharacter/Animations/MainCharacterAnimBP"));
 	GetMesh()->SetSkeletalMesh(Mannequin.Object);
 	GetMesh()->SetAnimInstanceClass(AnimBP.Object->GeneratedClass);
-
 	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f, -88.f));
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+	
+	GetCapsuleComponent()->SetVisibility(true);
+	GetCapsuleComponent()->bHiddenInGame = false;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("'SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -26,10 +29,16 @@ AMainCharacter::AMainCharacter()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
 	GetCharacterMovement()->MaxWalkSpeed = 225.f;
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = 200.f;
+	GetCharacterMovement()->CrouchedHalfHeight = 70.f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-	
+
 }
+
+
+
 
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
@@ -43,14 +52,15 @@ void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-
 }
 
 // Called to bind functionality to input
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
@@ -59,6 +69,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAxis("Run", this, &AMainCharacter::Run);
+	PlayerInputComponent->BindAxis("Crouch", this, &AMainCharacter::CharCrouch);
 }
 
 void AMainCharacter::MoveForward(float Value)
@@ -67,11 +78,11 @@ void AMainCharacter::MoveForward(float Value)
 		AddMovementInput(Direction, Value);
 		if ((Value != NULL) && (Value > 0))
 		{
-			IsWalking = true;
+			bIsWalking = true;
 		}
 		else
 		{
-			IsWalking = false;
+			bIsWalking = false;
 		}
 }
 
@@ -79,6 +90,20 @@ void AMainCharacter::MoveRight(float Value)
 {
 	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	AddMovementInput(Direction, Value);
+}
+
+void AMainCharacter::CharCrouch(float Value)
+{
+	if ((Value))
+	{
+		Crouch();
+		bCrouching = true;
+	}
+	else
+	{
+		UnCrouch();
+		bCrouching = false;
+	}
 }
 
 void AMainCharacter::Run(float Value)

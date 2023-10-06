@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
@@ -31,22 +32,30 @@ public:
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		USpringArmComponent* SpringArm;
+	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		UCameraComponent* Camera;
+	UCameraComponent* Camera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		USkeletalMeshComponent* MyMesh;
+	USkeletalMeshComponent* MyMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		bool IsWalking;
+	bool bIsWalking;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bHasPistol;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bCrouching;
 
 	UFUNCTION()
 	void MoveForward(float Value);
 
 	UFUNCTION()
 	void MoveRight(float Value);
+
+	void CharCrouch(float Value);
 
 	void Run(float Value);
 };
